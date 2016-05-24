@@ -1,0 +1,17 @@
+{
+  "name": "archianalysis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "seraph": "^0.14.3",
+    "xml-parser": "^1.2.1",
+    "xml2js": "^0.4.16"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "diorbert.pereira",
+  "license": "ISC"
+}
