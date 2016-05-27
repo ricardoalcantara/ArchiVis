@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "commander": "^2.9.0",
     "seraph": "^0.14.3",
     "xml-parser": "^1.2.1",
     "xml2js": "^0.4.16"
