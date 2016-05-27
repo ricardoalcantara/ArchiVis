@@ -14,13 +14,21 @@ program
   .action(function(fileName){
     loader.archimateOpenExchange2graph(fileName);  
   });
+  
+program
+  .command('correct [fileName]')
+  .alias('cr')
+  .description('Corrects a corrupted Archimate Model')
+  .action(function(fileName){
+    loader.correctModel(fileName);  
+  });
 
 program
   .command('status')
   .alias('st')
   .description('Verifies the healthy of an imported Archimate Model')
-  .option("-i, --isolated", "Return all nodes without any relationships")
-  .option("-b, --behaviour", "Return all behaviour elements without an actor associated")
+  .option('-i, --isolated', 'Return all nodes without any relationships')
+  .option('-b, --behaviour', 'Return all behaviour elements without an actor associated')
   .action(function(options){
     if(options.isolated)
         queryManager.findIsolatedNodes();
@@ -33,12 +41,12 @@ program
   .command('analyseApp [hoops] [elementName]')
   .alias('aa')
   .description('Performs model analysis')
-  .option("-g, --general", "Reports all aspects related with an application")
-  .option("-b, --bussiness", "Reports the business aspects related with an application")
-  .option("-a, --application", "Reports the application aspects related with an application")
-  .option("-t, --techonology", "Reports the techonology aspects related with an application")
-  .option("-d, --data", "Reports the data aspects related with an application") 
-  .option("-c, --depedency", "Reports the depedency degree of an application")
+  .option('-g, --general', 'Reports all aspects related with an application')
+  .option('-b, --bussiness', 'Reports the business aspects related with an application')
+  .option('-a, --application', 'Reports the application aspects related with an application')
+  .option('-t, --techonology', 'Reports the techonology aspects related with an application')
+  .option('-d, --data', 'Reports the data aspects related with an application') 
+  .option('-c, --depedency', 'Reports the depedency degree of an application')
   .action(function(hoops, elementName, options){
     if(options.general){
         queryManager.analyseBusinessDependency("ApplicationComponent", hoops, elementName);
