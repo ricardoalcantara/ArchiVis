@@ -1,14 +1,21 @@
 var graphManager = require("./graphManager.js");
 
 var fs = require("fs"),
-    xml2js = require("xml2js");
+    xml2js = require("xml2js"),
+    Log = require("log"),
+    log = new Log("info");
 
 module.exports = {
-    archimateOpenExchange2graph : function (fileName) {
+    archimateOpenExchange2graph : function (fileName, isUpdate) {
         var parser = new xml2js.Parser({explicitArray : true});
         fs.readFile(__dirname + "/" + fileName, function(err, data) {
             parser.parseString(data, function (err, result) {
-                nodeIterator(0, result["model"]["elements"][0]["element"].length, result, recordRelationships);
+                var timePoint = graphManager.getCurrentTimePoint();
+                
+                if(!isUpdate)
+                    timePoint++;    
+                
+                nodeIterator(0, result["model"]["elements"][0]["element"].length, result, timePoint, recordRelationships);
             });
         });
 
@@ -20,29 +27,37 @@ module.exports = {
                         parsedFile["model"]["relationships"][0]["relationship"][i]["$"]["target"],
                         parsedFile["model"]["relationships"][0]["relationship"][i]["$"]["xsi:type"]);      
                 }catch(err){
-                    console.log("FAILED ON INSERT RELATIONSHIP");    
+                    log.error("FAILED ON INSERT RELATIONSHIP: "+
+                        parsedFile["model"]["relationships"][0]["relationship"][i]["$"]["source"]+","+
+                        parsedFile["model"]["relationships"][0]["relationship"][i]["$"]["target"]+","+
+                        parsedFile["model"]["relationships"][0]["relationship"][i]["$"]["xsi:type"]);    
                 }             
             }    
         }
 
         // Simulates a serial processing
-        function nodeIterator(i, length, parsedFile, recordRelationshipsCallback) {
+        function nodeIterator(i, length, parsedFile, timePoint, recordRelationshipsCallback) {
             if(i < length) {   
                 try{
                     graphManager.recordNode(
                         parsedFile["model"]["elements"][0]["element"][i]["$"]["identifier"],
                         parsedFile["model"]["elements"][0]["element"][i]["label"][0]["_"],
                         parsedFile["model"]["elements"][0]["element"][i]["$"]["xsi:type"],
+                        timePoint,
                         function (){
-                            nodeIterator(i + 1, length, parsedFile, recordRelationshipsCallback);   
+                            nodeIterator(i + 1, length, parsedFile, timePoint, recordRelationshipsCallback);   
 
                             if(i == length - 1){ // If is the last inserted node, then start the relationships register
                                 recordRelationshipsCallback(parsedFile);    
                             }                    
                         });     
                 }catch(err){
-                    console.log("FAILED ON INSERT NODE");
-                    nodeIterator(i + 1, length, parsedFile, recordRelationshipsCallback);       
+                    log.error("FAILED ON INSERT NODE: "+
+                        parsedFile["model"]["relationships"][0]["relationship"][i]["$"]["source"]+","+
+                        parsedFile["model"]["relationships"][0]["relationship"][i]["$"]["target"]+","+
+                        parsedFile["model"]["relationships"][0]["relationship"][i]["$"]["xsi:type"]);   
+   
+                    nodeIterator(i + 1, length, parsedFile, timePoint, recordRelationshipsCallback);       
                 }                     
             }    
         }    

@@ -12,7 +12,7 @@ program
   .alias('ld')
   .description('Load an Archimate Model File')
   .action(function(fileName){
-    loader.archimateOpenExchange2graph(fileName);  
+    loader.archimateOpenExchange2graph(fileName, true);  
   });
   
 program
