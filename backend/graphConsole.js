@@ -8,11 +8,11 @@ program
   .version('0.0.1')
 
 program
-  .command('load [fileName]')
+  .command('load [type] [fileName]')
   .alias('ld')
   .description('Load an Archimate Model File')
-  .action(function(fileName){
-    loader.archimateOpenExchange2graph(fileName, true);  
+  .action(function(type, fileName){
+    loader.archimateOpenExchange2graph(fileName, type === "update");  
   });
   
 program
