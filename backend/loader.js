@@ -10,12 +10,9 @@ module.exports = {
         var parser = new xml2js.Parser({explicitArray : true});
         fs.readFile(__dirname + "/" + fileName, function(err, data) {
             parser.parseString(data, function (err, result) {
-                var timePoint = graphManager.getCurrentTimePoint();
-                
-                if(!isUpdate)
-                    timePoint++;    
-                
-                nodeIterator(0, result["model"]["elements"][0]["element"].length, result, timePoint, recordRelationships);
+                graphManager.getTimePoint(isUpdate, function(timePoint){
+                    nodeIterator(0, result["model"]["elements"][0]["element"].length, result, timePoint, recordRelationships);    
+                });        
             });
         });
 
