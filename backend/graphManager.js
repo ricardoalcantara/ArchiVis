@@ -37,21 +37,28 @@ module.exports = {
     },
     
     clearModel : function(timePoint, callback) { // If TimePoint is -1 then clear all the graph
-        var query = "MATCH (a)-[rel]->(b), (d)$pattern DELETE rel, a, b, d$list";
+        console.log("Clearing model...");
+
+        var relationshipDeletion = "MATCH (a)-[rel]->(b) $pattern DELETE rel";
+        var nodeDeletion = "MATCH (a)$pattern DELETE a";
         
         if(timePoint > -1){
-            query = query.replace("$pattern", ", (a)-->(s:Plato {timePoint:"+timePoint+"})<--(b), (d)-->(s)");
-            query = query.replace("$list", ", s");
+            relationshipDeletion = relationshipDeletion.replace("$pattern", ", (s:Plato {timePoint:"+timePoint+"}) WHERE (a)-->(s)");
+            nodeDeletion = nodeDeletion.replace("$pattern", "-->(s:Plato {timePoint:"+timePoint+"})");
         }else{
-            query = query.replace("$pattern", "");
-            query = query.replace("$list", "");    
+            relationshipDeletion = relationshipDeletion.replace("$pattern", "");
+            nodeDeletion = nodeDeletion.replace("$pattern", "");
         }
-        
+
         // Running query
-        db.query(query, function (err, result){
+        db.query(relationshipDeletion, function (err, resultRelationshipDeletion){
             if(err) console.log(err);    
-                        
-            callback();
+            
+            db.query(nodeDeletion, function (err, resultNodeDeletion){  
+                if(err) console.log(err);   
+                          
+                callback();
+            });
         });  
     },
     
