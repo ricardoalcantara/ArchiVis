@@ -6,7 +6,7 @@ var db = require("seraph")( {
 module.exports = {
     
     getTimePoint : function(isUpdate, insertionCallback) {
-        var query = "MATCH (p:Plato) RETURN p.timePoint AS time ORDER BY time DESC";    
+        var query = "MATCH (p:ModelPlato) RETURN p.timePoint AS time ORDER BY time DESC";    
         var currentTimePoint = 0;
         
         // Getting the current timePoint
@@ -25,7 +25,16 @@ module.exports = {
             }  
             
             if(!isUpdate){ // Creating a new Plato node
-                var platoInsertionQuery = "CREATE (p:Plato {timePoint:"+currentTimePoint+"})";
+                var platoInsertionQuery = "$match CREATE (p:ModelPlato {timePoint:"+currentTimePoint+"})$complement";
+                
+                // Linking model plateaus
+                if(currentTimePoint > 0){
+                    platoInsertionQuery = platoInsertionQuery.replace("$match", "MATCH (a:ModelPlato {timePoint:"+(currentTimePoint - 1)+"})");
+                    platoInsertionQuery = platoInsertionQuery.replace("$complement", "<-[:PRIOR_TO]-(a)");    
+                }else{
+                    platoInsertionQuery = platoInsertionQuery.replace("$match", "");
+                    platoInsertionQuery = platoInsertionQuery.replace("$complement", "");     
+                }               
                     
                 db.query(platoInsertionQuery, function (err, result){     
                     if(err) console.log(err); 
@@ -43,8 +52,8 @@ module.exports = {
         var nodeDeletion = "MATCH (a)$pattern DELETE a";
         
         if(timePoint > -1){
-            relationshipDeletion = relationshipDeletion.replace("$pattern", ", (s:Plato {timePoint:"+timePoint+"}) WHERE (a)-->(s)");
-            nodeDeletion = nodeDeletion.replace("$pattern", "-->(s:Plato {timePoint:"+timePoint+"})");
+            relationshipDeletion = relationshipDeletion.replace("$pattern", ", (s:ModelPlato {timePoint:"+timePoint+"}) WHERE (a)-->(s)");
+            nodeDeletion = nodeDeletion.replace("$pattern", "-->(s:ModelPlato {timePoint:"+timePoint+"})");
         }else{
             relationshipDeletion = relationshipDeletion.replace("$pattern", "");
             nodeDeletion = nodeDeletion.replace("$pattern", "");
@@ -63,7 +72,7 @@ module.exports = {
     },
     
     recordNode : function(id, name, type, timePoint, callback) {
-        var query = "MATCH (p:Plato {timePoint:$time}) CREATE (n:$type {elementid: \"$id\", name: \"$name\"})-[:PLATO]->(p) RETURN n";
+        var query = "MATCH (p:ModelPlato {timePoint:$time}) CREATE (n:$type {elementid: \"$id\", name: \"$name\"})-[:PLATO]->(p) RETURN n";
         
         // Replacing mapped query elements 
         query = query.replace("$type", type);
