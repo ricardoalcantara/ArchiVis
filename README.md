@@ -14,6 +14,7 @@ Dependencies:
 
 The ArchiVis project is fully compatible with the Archimate Open Exchange File Format. 
 Any tool that has the capability to export to such format is able to provide data for ArchiVis, including the Open-Source free modeling tool [Archi](http://www.archimatetool.com/).
+
 The following elements are considered in the model importing process:
 
 * Motivational Elements
@@ -24,3 +25,12 @@ The following elements are considered in the model importing process:
 * Relationships
 * Folder Structure
 * Views
+
+## Using as Console
+
+ArchiVis provides a terminal interface for initial use. The development of GUI is on project's roadmap.
+
+# Import Archimate Open Exchange File Format
+
+> `graphConsole.js load [modelFileName]`
+
