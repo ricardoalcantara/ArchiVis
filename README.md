@@ -38,9 +38,10 @@ ArchiVis provides a terminal interface for initial use. The development of GUI i
 
 > `graphConsole.js status [option]`
 
-Options:
+**Options:**
 
 -i : Return all nodes without any relationships
+
 -b : Return all behaviour elements without an actor associated
 
 ### Analysing the Model
@@ -49,16 +50,21 @@ For analyse the model from Application perspective, use the following command.
 
 > `graphConsole.js analyseApp [option] [hoops] [elementName]`
 
-Options:
+**Options:**
 
 -g : Reports all aspects related with an application
+
 -b : Reports the business aspects related with an application
+
 -a : Reports the application aspects related with an application
+
 -t : Reports the techonology aspects related with an application
+
 -d : Reports the data aspects related with an application
+
 -c : Reports the depedency degree of an application
 
-Hoops: Amount of hoops in the graph to consider.
+**Hoops:** Amount of hoops in the graph to consider.
 
-ElementName: The name of the element to analyse.
+**ElementName:** The name of the element to analyse.
 
