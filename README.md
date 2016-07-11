@@ -30,7 +30,35 @@ The following elements are considered in the model importing process:
 
 ArchiVis provides a terminal interface for initial use. The development of GUI is on project's roadmap.
 
-# Import Archimate Open Exchange File Format
+### Importing Archimate Open Exchange File Format
 
 > `graphConsole.js load [modelFileName]`
+
+### Checking the Status of the Imported Model
+
+> `graphConsole.js status [option]`
+
+Options:
+
+-i : Return all nodes without any relationships
+-b : Return all behaviour elements without an actor associated
+
+### Analysing the Model
+
+For analyse the model from Application perspective, use the following command.
+
+> `graphConsole.js analyseApp [option] [hoops] [elementName]`
+
+Options:
+
+-g : Reports all aspects related with an application
+-b : Reports the business aspects related with an application
+-a : Reports the application aspects related with an application
+-t : Reports the techonology aspects related with an application
+-d : Reports the data aspects related with an application
+-c : Reports the depedency degree of an application
+
+Hoops: Amount of hoops in the graph to consider.
+
+ElementName: The name of the element to analyse.
 
