@@ -48,27 +48,6 @@ module.exports = {
                 }                     
             }    
         }    
-    },
-    
-    correctModel : function (fileName) {   
-        fs.readFile(__dirname + "/" + fileName, "utf8", function(err, data) {
-            if (err) console.log(err);
-            
-            data = data.replaceAll("ArchimateModel", "model");
-            data = data.replaceAll("folders", "folder");
-            data = data.replaceAll("elements", "element");
-            data = data.replaceAll("children", "child");
-            data = data.replaceAll("sourceConnections", "sourceConnection");
-            data = data.replaceAll("DiagramModelArchimateObject", "DiagramObject");
-            data = data.replaceAll("DiagramModelArchimateConnection", "Connection");
-            data = data.replaceAll("DiagramModelGroup", "Group");
-            data = data.replaceAll("DiagramModelNote", "Note");
-            data = data.replaceAll("bendpoints", "bendpoint");
-            
-            fs.writeFile(__dirname + "/result.xml", data, "utf8", function(err, writedData){
-                if (err) console.log(err);
-            });    
-        });    
     }
 }      
 

@@ -14,14 +14,6 @@ program
   .action(function(fileName){
     loader.archimateOpenExchange2graph(fileName);  
   });
-  
-program
-  .command('correct [fileName]')
-  .alias('cr')
-  .description('Corrects a corrupted Archimate Model')
-  .action(function(fileName){
-    loader.correctModel(fileName);  
-  });
 
 program
   .command('status')
