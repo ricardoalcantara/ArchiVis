@@ -8,7 +8,9 @@ module.exports = {
         var parser = new xml2js.Parser({explicitArray : true});
         fs.readFile(__dirname + "/" + fileName, function(err, data) {
             parser.parseString(data, function (err, result) {
-                nodeIterator(0, result["model"]["elements"][0]["element"].length, result, recordRelationships);
+                graphManager.clearModel(function (){
+                    nodeIterator(0, result["model"]["elements"][0]["element"].length, result, recordRelationships);    
+                });                
             });
         });
 

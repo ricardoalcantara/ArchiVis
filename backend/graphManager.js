@@ -5,6 +5,24 @@ var db = require("seraph")( {
 
 module.exports = {
     
+    clearModel : function(callback) {
+        console.log("Clearing model...");
+
+        var relationshipDeletion = "MATCH (a)-[rel]->(b) DELETE rel";
+        var nodeDeletion = "MATCH (a) DELETE a";
+
+        // Running query
+        db.query(relationshipDeletion, function (err, resultRelationshipDeletion){
+            if(err) console.log(err);    
+            
+            db.query(nodeDeletion, function (err, resultNodeDeletion){  
+                if(err) console.log(err);   
+                          
+                callback();
+            });
+        });  
+    },
+    
     recordNode : function(id, name, type, callback) {
         var query = "CREATE (n:$type {elementid: \"$id\", name: \"$name\"}) RETURN n";
         
