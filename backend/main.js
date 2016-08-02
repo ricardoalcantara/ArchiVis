@@ -1,6 +1,6 @@
 var loader = require("./loader.js");
 var queryManager = require("./queryManager.js");
-
+var processor = require("./processor.js");
 
 var program = require('commander');
 
@@ -13,6 +13,15 @@ program
   .description('Load an Archimate Model File')
   .action(function(fileName){
     loader.archimateOpenExchange2graph(fileName);  
+  });
+  
+program
+  .command('util')
+  .alias('ut')
+  .option('-d, --derivate', 'Generates derivated relationships')
+  .description('Applies some administrative processing to the graph')
+  .action(function(options){
+    processor.generateDerivatedRelationships(1);
   });
 
 program

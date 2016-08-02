@@ -32,11 +32,11 @@ ArchiVis provides a terminal interface for initial use. The development of GUI i
 
 ### Importing Archimate Open Exchange File Format
 
-> `graphConsole.js load [modelFileName]`
+> `main.js load [modelFileName]`
 
 ### Checking the Status of the Imported Model
 
-> `graphConsole.js status [option]`
+> `main.js status [option]`
 
 **Options:**
 
@@ -48,7 +48,7 @@ ArchiVis provides a terminal interface for initial use. The development of GUI i
 
 For analyse the model from Application perspective, use the following command.
 
-> `graphConsole.js analyseApp [option] [hoops] [elementName]`
+> `main.js analyseApp [option] [hoops] [elementName]`
 
 **Options:**
 

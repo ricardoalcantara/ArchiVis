@@ -1,3 +1,5 @@
+"use strict";
+
 var db = require("seraph")( {
     user: 'neo4j',
     pass: 'test'
