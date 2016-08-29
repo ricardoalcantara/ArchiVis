@@ -42,7 +42,7 @@ module.exports = {
     
     recordRelationship : function(sourceid, targetid, type) {
         var query = "MATCH (a {elementid: \"$sourceid\"}), (b {elementid: \"$targetid\"}) "+
-            "CREATE (a)-[r:$type]->(b) RETURN a, r, b";
+            "CREATE (a)-[r:$type {isDerivated: 0}]->(b) RETURN a, r, b";
         
         // Replacing mapped query elements 
         query = query.replace("$sourceid", sourceid);

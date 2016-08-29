@@ -123,7 +123,11 @@ module.exports = {
             "> FUNCOES DE APLICACAO SEM ATORES",
             "> FUNCOES DE INFRAESTRUTURA SEM ATORES"
             ], printNodeData); 
-    }, 
+    },
+    
+    findSimilarNodes : function () {   
+        executeQueries(["MATCH (a), (b) WHERE a.name = b.name AND a.elementid <> b.elementid RETURN DISTINCT a"], ["\n> NOS COM DUPLICATAS\n"], printNodeData);  
+    },
     
     analyseApplicationDependencyProducerLevel : function (maxHoops, elementName) {
         countRelated("ApplicationComponent", "ApplicationComponent", maxHoops, elementName, RIGHT, function () {

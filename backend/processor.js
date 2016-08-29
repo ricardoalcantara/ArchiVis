@@ -16,8 +16,7 @@ const ASSOCIATION = 10;
 
 const relTypes = "CompositionRelationship|AggregationRelationship|AssignmentRelationship|RealizationRelationship|UsedByRelationship|AccessRelationship|AssociationRelationship";
 const q1 = "MATCH (a)-[rel1:"+relTypes+"]->(b)-[rel2:"+relTypes+"]->(c) RETURN a, rel1, rel2, c";
-
-const q2 = "MERGE (a {elementid: \"$sourceid\"}) MERGE (c {elementid: \"$targetid\"}) MERGE (a)-[:$derivatedRelationship]->(c)";
+const q2 = "MERGE (a {elementid: \"$sourceid\"}) MERGE (c {elementid: \"$targetid\"}) MERGE (a)-[:$derivatedRelationship {isDerivated: 1}]->(c)";
 
 function getRelationshipPower (structuralRelationship){
 	switch (structuralRelationship){
@@ -74,7 +73,7 @@ module.exports = {
 				insertionQuery = insertionQuery.replace("$derivatedRelationship", derivatedRelationship);
 				
 				db.query(insertionQuery, function(err, res){
-					
+					if(err) console.log(err);	
 				});
 			})			
 		});

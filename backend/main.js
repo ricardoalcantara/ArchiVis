@@ -30,12 +30,16 @@ program
   .description('Verifies the healthy of an imported Archimate Model')
   .option('-i, --isolated', 'Return all nodes without any relationships')
   .option('-b, --behaviour', 'Return all behaviour elements without an actor associated')
+  .option('-d, --duplicated', 'Return all elements that have duplicate elements')
   .action(function(options){
     if(options.isolated)
         queryManager.findIsolatedNodes();
         
     if(options.behaviour)
         queryManager.findBehaviourAntiPattern();
+        
+    if(options.duplicated)
+        queryManager.findSimilarNodes();
   });
   
 program
