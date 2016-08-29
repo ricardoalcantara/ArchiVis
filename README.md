@@ -44,6 +44,8 @@ ArchiVis provides a terminal interface for initial use. The development of GUI i
 
 -b : Return all behaviour elements without an actor associated
 
+-d : Return all elements that have duplicate elements
+
 ### Analysing the Model
 
 For analyse the model from Application perspective, use the following command.
