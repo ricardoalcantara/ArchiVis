@@ -18,7 +18,7 @@ server.post('/analysebusinessdep/:elementname/:hoops', jsonParser, function(req,
     var elementName = req.params.elementname;
 	var hoops = req.params.hoops;
 	
-	analysisManager.analyseBusinessDependency("ApplicationComponent", hoops, elementName, function sendResponse(response){    		
+	analysisManager.analyseBusinessDependency("ApplicationComponent", hoops, elementName, function (response){    		
 		res.json(response);    
 	});    
 	                       
@@ -29,7 +29,7 @@ server.post('/analyseapplicationdep/:elementname/:hoops', jsonParser, function(r
     var elementName = req.params.elementname;
 	var hoops = req.params.hoops;
 	
-	analysisManager.analyseApplicationDependency("ApplicationComponent", hoops, elementName, function sendResponse(response){    		
+	analysisManager.analyseApplicationDependency("ApplicationComponent", hoops, elementName, function (response){    		
 		res.json(response);    
 	});    
 	                       
@@ -40,7 +40,7 @@ server.post('/analysetechnologydep/:elementname/:hoops', jsonParser, function(re
     var elementName = req.params.elementname;
 	var hoops = req.params.hoops;
 	
-	analysisManager.analyseTechnologyDependency("ApplicationComponent", hoops, elementName, function sendResponse(response){    		
+	analysisManager.analyseTechnologyDependency("ApplicationComponent", hoops, elementName, function (response){    		
 		res.json(response);    
 	});    
 	                       
@@ -51,7 +51,7 @@ server.post('/analysedatausage/:elementname/:hoops', jsonParser, function(req, r
     var elementName = req.params.elementname;
 	var hoops = req.params.hoops;
 	
-	analysisManager.analyseDataUsage("ApplicationComponent", hoops, elementName, function sendResponse(response){    		
+	analysisManager.analyseDataUsage("ApplicationComponent", hoops, elementName, function (response){    		
 		res.json(response);    
 	});    
 	                       
