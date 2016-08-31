@@ -11,7 +11,7 @@ const RIGHT = 20;
 
 function printNodeData (result) {
     for(var i = 0, len = result.length; i < len; i++){
-        console.log(result[i].name + " (" + result[i].elementid + ")");
+        console.log(result[i].name + " (" + result[i].id + ") [" + result[i].type + "]");
     }    
 }
 
@@ -34,8 +34,8 @@ function queriesExecutorRepeter(i, length, queries, messages, printListCallback)
     }
 }
 
-function analyseDependency (sourceType, targetType, maxHoops, elementName, direction, printTitleCallback, printListCallback) {
-    var query = "MATCH (a:$sourceType)$dir1-[*1..$maxHoops]-$dir2(b:$targetType) WHERE LOWER(a.name) =~ \".*$elementName.*\" RETURN DISTINCT b";
+function analyseDependency (sourceType, targetType, maxHoops, elementName, direction, outputCallback) {
+    var query = "MATCH (a:$sourceType)$dir1-[*1..$maxHoops]-$dir2(b:$targetType) WHERE LOWER(a.name) =~ \".*$elementName.*\" RETURN DISTINCT b.name AS name, b.elementid AS id, labels(b) AS type";
     
     // Replacing mapped query elements
     query = query.replace("$sourceType", sourceType);
@@ -61,8 +61,7 @@ function analyseDependency (sourceType, targetType, maxHoops, elementName, direc
     db.query(query, function(err, result) {
         if (err) console.log(err);
         
-        printTitleCallback();
-        printListCallback(result);
+        outputCallback(result);
     });     
 }
     
@@ -141,40 +140,24 @@ module.exports = {
         });
     }, 
     
-    analyseBusinessDependency : function (sourceType, maxHoops, elementName) {
-        analyseDependency(sourceType, "BusinessProcess", maxHoops, elementName, BIDIRECTIONAL, function (){
-            console.log("\n> PROCESSOS DE NEGOCIO SUPORTADOS\n===============================================================\n");
-        }, printNodeData);  
-        analyseDependency(sourceType, "BusinessActor", maxHoops, elementName, BIDIRECTIONAL, function (){
-            console.log("\n> ATORES APOIADOS\n===============================================================\n");
-        }, printNodeData); 
+    analyseBusinessDependency : function (sourceType, maxHoops, elementName, outputCallback) {
+        analyseDependency(sourceType, "BusinessProcess", maxHoops, elementName, BIDIRECTIONAL, outputCallback);  
+        analyseDependency(sourceType, "BusinessActor", maxHoops, elementName, BIDIRECTIONAL, outputCallback); 
     },  
     
-    analyseApplicationDependency : function (sourceType, maxHoops, elementName) {
-        analyseDependency(sourceType, "ApplicationComponent", maxHoops, elementName, BIDIRECTIONAL, function (){
-            console.log("\n> APLICACOES RELACIONADAS\n===============================================================\n");
-        }, printNodeData); 
-        analyseDependency(sourceType, "ApplicationComponent", 1, elementName, RIGHT, function (){
-            console.log("\n> APLICACOES QUE USAM A APLICACAO DIRETAMENTE\n===============================================================\n");
-        }, printNodeData); 
-        analyseDependency(sourceType, "ApplicationComponent", 1, elementName, LEFT, function (){
-            console.log("\n> APLICACOES QUE A APLICACAO FAZ USO DIRETAMENTE\n===============================================================\n");
-        }, printNodeData); 
+    analyseApplicationDependency : function (sourceType, maxHoops, elementName, outputCallback) {
+        analyseDependency(sourceType, "ApplicationComponent", maxHoops, elementName, BIDIRECTIONAL, outputCallback); 
+        analyseDependency(sourceType, "ApplicationComponent", 1, elementName, RIGHT, outputCallback); 
+        analyseDependency(sourceType, "ApplicationComponent", 1, elementName, LEFT, outputCallback); 
     },
     
-    analyseTechnologyDependency : function (sourceType, maxHoops, elementName) {
-        analyseDependency(sourceType, "Node", maxHoops, elementName, BIDIRECTIONAL, function (){
-            console.log("\n> NOS QUE SUPORTAM A APLICACAO\n===============================================================\n");
-        }, printNodeData);  
+    analyseTechnologyDependency : function (sourceType, maxHoops, elementName, outputCallback) {
+        analyseDependency(sourceType, "Node", maxHoops, elementName, BIDIRECTIONAL, outputCallback);  
     },
     
-    analyseDataUsage : function (sourceType, maxHoops, elementName) {
-        analyseDependency(sourceType, "Artifact", maxHoops, elementName, LEFT, function (){
-            console.log("\n> ARTEFATOS ACESSADOS PELA APLICACAO\n===============================================================\n");
-        }, printNodeData); 
-        analyseDependency(sourceType, "DataObject", maxHoops, elementName, BIDIRECTIONAL, function (){
-            console.log("\n> DADOS ACESSADOS PELA APLICACAO\n===============================================================\n");
-        }, printNodeData); 
+    analyseDataUsage : function (sourceType, maxHoops, elementName, outputCallback) {
+        analyseDependency(sourceType, "Artifact", maxHoops, elementName, LEFT, outputCallback); 
+        analyseDependency(sourceType, "DataObject", maxHoops, elementName, BIDIRECTIONAL, outputCallback); 
     }       
     
 };

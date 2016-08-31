@@ -4,6 +4,12 @@ var processor = require("./archivis.core/modelProcessor.js");
 
 var program = require('commander');
 
+function printNodeData (result) {
+    for(var i = 0, len = result.length; i < len; i++){
+        console.log(result[i].name + " (" + result[i].id + ") [" + result[i].type + "]");
+    }    
+}
+
 program
   .version('0.0.1')
 
@@ -61,16 +67,16 @@ program
     }        
         
     if(options.bussiness)
-        analysisManager.analyseBusinessDependency("ApplicationComponent", hoops, elementName);
+        analysisManager.analyseBusinessDependency("ApplicationComponent", hoops, elementName, printNodeData);
         
     if(options.application)
-        analysisManager.analyseApplicationDependency("ApplicationComponent", hoops, elementName);
+        analysisManager.analyseApplicationDependency("ApplicationComponent", hoops, elementName, printNodeData);
         
     if(options.techonology)
-        analysisManager.analyseTechnologyDependency("ApplicationComponent", hoops, elementName);
+        analysisManager.analyseTechnologyDependency("ApplicationComponent", hoops, elementName, printNodeData);
         
     if(options.data)
-        analysisManager.analyseDataUsage("ApplicationComponent", hoops, elementName);
+        analysisManager.analyseDataUsage("ApplicationComponent", hoops, elementName, printNodeData);
             
     if(options.depedency){
         analysisManager.analyseApplicationDependencyProducerLevel(hoops, elementName);
