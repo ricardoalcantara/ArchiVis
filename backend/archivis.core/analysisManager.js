@@ -140,14 +140,23 @@ module.exports = {
         });
     }, 
     
-    analyseBusinessDependency : function (sourceType, maxHoops, elementName, outputCallback) {
+    analyseBusinessDependencyWithBusinessProcess : function (sourceType, maxHoops, elementName, outputCallback) {
         analyseDependency(sourceType, "BusinessProcess", maxHoops, elementName, BIDIRECTIONAL, outputCallback);  
+    }, 
+    
+    analyseBusinessDependencyWithBusinessActor : function (sourceType, maxHoops, elementName, outputCallback) {
         analyseDependency(sourceType, "BusinessActor", maxHoops, elementName, BIDIRECTIONAL, outputCallback); 
     },  
     
-    analyseApplicationDependency : function (sourceType, maxHoops, elementName, outputCallback) {
-        analyseDependency(sourceType, "ApplicationComponent", maxHoops, elementName, BIDIRECTIONAL, outputCallback); 
+    analyseApplicationBidirecionalDependency : function (sourceType, maxHoops, elementName, outputCallback) {
+        analyseDependency(sourceType, "ApplicationComponent", maxHoops, elementName, BIDIRECTIONAL, outputCallback);    
+    },
+    
+    analyseApplicationRightDependency : function (sourceType, maxHoops, elementName, outputCallback) {
         analyseDependency(sourceType, "ApplicationComponent", 1, elementName, RIGHT, outputCallback); 
+    },
+    
+    analyseApplicationLeftDependency : function (sourceType, maxHoops, elementName, outputCallback) {
         analyseDependency(sourceType, "ApplicationComponent", 1, elementName, LEFT, outputCallback); 
     },
     
@@ -155,9 +164,12 @@ module.exports = {
         analyseDependency(sourceType, "Node", maxHoops, elementName, BIDIRECTIONAL, outputCallback);  
     },
     
-    analyseDataUsage : function (sourceType, maxHoops, elementName, outputCallback) {
+    analyseDataLeftUsage : function (sourceType, maxHoops, elementName, outputCallback) {
         analyseDependency(sourceType, "Artifact", maxHoops, elementName, LEFT, outputCallback); 
+    },    
+    
+    analyseDataBidirecionalUsage : function (sourceType, maxHoops, elementName, outputCallback) {
         analyseDependency(sourceType, "DataObject", maxHoops, elementName, BIDIRECTIONAL, outputCallback); 
-    }       
+    }   
     
 };
