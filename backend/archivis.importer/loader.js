@@ -1,4 +1,5 @@
-var graphManager = require("./graphManager.js");
+const graphManager = require("./graphManager.js");
+const path = require('path');
 
 var fs = require("fs"),
     xml2js = require("xml2js");
@@ -52,12 +53,18 @@ function nodeIterator(i, length, parsedFile, recordRelationshipsCallback) {
 module.exports = {
     archimateOpenExchange2graph : function (fileName) {
         var parser = new xml2js.Parser({explicitArray : true});
-        fs.readFile(__dirname + "/" + fileName, function(err, data) {
-            parser.parseString(data, function (err, result) {
-                graphManager.clearModel(function (){
-                    nodeIterator(0, result["model"]["elements"][0]["element"].length, result, recordRelationships);    
-                });                
-            });
+        var filePath = path.join(__dirname, "data", fileName);
+
+        fs.readFile(filePath, function(err, data) {        
+                parser.parseString(data, function (err, result) {
+                    if(result != null){
+                        graphManager.clearModel(function (){
+                            nodeIterator(0, result["model"]["elements"][0]["element"].length, result, recordRelationships);    
+                        });
+                    }else{
+                        console.log("ERR: Problem on parsing the input file"); 
+                    }                                   
+                });   
         });          
     }
 }      

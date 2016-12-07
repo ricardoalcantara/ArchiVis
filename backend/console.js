@@ -60,10 +60,10 @@ program
   .option('-c, --depedency', 'Reports the depedency degree of an application')
   .action(function(hoops, elementName, options){
     if(options.general){
-        analysisManager.analyseBusinessDependency("ApplicationComponent", hoops, elementName);
-        analysisManager.analyseApplicationDependency("ApplicationComponent", hoops, elementName);
-        analysisManager.analyseTechnologyDependency("ApplicationComponent", hoops, elementName);
-        analysisManager.analyseDataUsage("ApplicationComponent", hoops, elementName);    
+        analysisManager.analyseBusinessDependency("ApplicationComponent", hoops, elementName, printNodeData);
+        analysisManager.analyseApplicationDependency("ApplicationComponent", hoops, elementName, printNodeData);
+        analysisManager.analyseTechnologyDependency("ApplicationComponent", hoops, elementName, printNodeData);
+        analysisManager.analyseDataUsage("ApplicationComponent", hoops, elementName, printNodeData);    
     }        
         
     if(options.bussiness)
